@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  confluence:
+    image: cptactionhank/atlassian-confluence:6.9.1
+    restart: always
+    container_name: confluence
+    hostname: confluence
+    networks:
+      - confluencenet
+    ports:
+      - '8090:8090'
+      - '8091:8091'
+    depends_on:
+      - postgresql
+
+  postgresql:
+    image: postgres:10.4
+    restart: always
+    container_name: postgres
+    hostname: postgres
+    networks:
+      - confluencenet
+    environment:
+      - 'POSTGRES_USER=confluencedb'
+      # CHANGE THE PASSWORD!
+      - 'POSTGRES_PASSWORD=jellyfish'
+      - 'POSTGRES_DB=confluencedb'
+      - 'POSTGRES_ENCODING=UTF8'
+      - 'POSTGRES_COLLATE=C'
+      - 'POSTGRES_COLLATE_TYPE=C'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+networks:
+  confluencenet:
+    driver: bridge
