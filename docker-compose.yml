@@ -8,6 +8,8 @@ services:
     hostname: confluence
     networks:
       - confluencenet
+    reservations:
+      cpus: '2.00'
     ports:
       - '8090:8090'
       - '8091:8091'
