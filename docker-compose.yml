@@ -52,4 +52,5 @@ services:
 
 networks:
   confluencenet:
-    driver: bridge
+    #driver: bridge
+    driver: swarm
