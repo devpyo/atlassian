@@ -12,6 +12,11 @@ services:
       resources:
         reservations:
           cpus: '2.00'
+        restart_policy:
+          condition: any
+          delay: 5s
+          max_attempts: 3
+          window: 120s
     ports:
       - '8090:8090'
       - '8091:8091'
@@ -38,6 +43,12 @@ services:
       interval: 30s
       timeout: 30s
       retries: 3
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
 
 networks:
   confluencenet:
