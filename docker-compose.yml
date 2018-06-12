@@ -1,22 +1,13 @@
-version: '3'
+version: '2'
 
 services:
   confluence:
     image: cptactionhank/atlassian-confluence:6.9.1
-    #restart: always
+    restart: always
     container_name: confluence
     hostname: confluence
     networks:
       - confluencenet
-    deploy:
-      resources:
-        reservations:
-          cpus: '2.00'
-        restart_policy:
-          condition: any
-          delay: 5s
-          max_attempts: 3
-          window: 120s
     ports:
       - '8090:8090'
       - '8091:8091'
@@ -25,7 +16,7 @@ services:
 
   postgresql:
     image: postgres:10.4
-    #restart: always
+    restart: always
     container_name: postgres
     hostname: postgres
     networks:
@@ -38,19 +29,12 @@ services:
       - 'POSTGRES_ENCODING=UTF8'
       - 'POSTGRES_COLLATE=C'
       - 'POSTGRES_COLLATE_TYPE=C'
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 30s
-      timeout: 30s
-      retries: 3
-    deploy:
-      restart_policy:
-        condition: any
-        delay: 5s
-        max_attempts: 3
-        window: 120s
+    # healthcheck:
+    #   test: ["CMD-SHELL", "pg_isready -U postgres"]
+    #   interval: 30s
+    #   timeout: 30s
+    #   retries: 3
 
 networks:
   confluencenet:
-    #driver: bridge
-    driver: swarm
+    driver: bridge
